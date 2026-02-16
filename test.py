@@ -1,14 +1,13 @@
 import streamlit as st
 
-# --- Konfiguration: WICHTIG! Layout auf "wide" setzen ---
+# --- Seiten-Konfiguration ---
 st.set_page_config(
-    page_title="Frage...",
-    page_icon="😏",
-    layout="wide",  # Nutzt die volle Breite
+    page_title="Frage",
+    layout="wide",
     initial_sidebar_state="collapsed"
 )
 
-# --- URLs der Bilder ---
+# --- Bild URLs ---
 IMG_JUMPHOUSE = "https://www.hamburg.de/resource/image/406012/landscape_ratio16x9/1240/697/13da6ae95443c66842a892d481476ca/867C02CEFA3C808D4962846D57A0774C/gallery-1-neuesstartbild.jpg"
 IMG_WUNDERLAND = "https://www.miniatur-wunderland.de/assets/content/layout/italien/italien-riomaggiore-highangle.jpg"
 
@@ -18,180 +17,182 @@ if 'page' not in st.session_state:
 if 'choice' not in st.session_state:
     st.session_state.choice = ""
 
-# --- Globales CSS für Layout & Vibe ---
+# --- CSS Design (Minimalistisch & Bilder Fix) ---
 st.markdown(f"""
     <style>
-    /* 1. Alles auf 0 setzen für Fullscreen-Look */
+    /* Entfernt den weißen Standard-Rand von Streamlit oben/links/rechts */
     .block-container {{
-        padding-top: 0rem;
-        padding-bottom: 0rem;
-        padding-left: 0rem;
-        padding-right: 0rem;
+        padding: 0 !important;
+        margin: 0 !important;
         max-width: 100%;
     }}
     
-    /* Header ausblenden */
-    header {{visibility: hidden;}}
-    footer {{visibility: hidden;}}
+    /* Header und Footer ausblenden */
+    header, footer {{display: none !important;}}
     
-    /* Style für die Überschriften */
-    h1 {{
-        text-align: center;
-        font-family: 'Helvetica', sans-serif;
-        color: white;
-        text-shadow: 2px 2px 8px #000000;
-        z-index: 999;
-        position: relative;
-    }}
-
-    /* Button Styling - Modern & Clean */
+    /* Button Design (Clean, Schwarz/Weiß) */
     div.stButton > button {{
-        display: block;
-        margin: 0 auto;
-        background-color: rgba(255, 255, 255, 0.9);
-        color: #000;
-        border: none;
-        border-radius: 8px;
-        padding: 12px 30px;
+        background-color: white;
+        color: black;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        padding: 10px 20px;
+        font-size: 16px;
         font-weight: bold;
-        font-size: 20px;
-        transition: all 0.3s ease;
-        box-shadow: 0px 4px 15px rgba(0,0,0,0.3);
+        box-shadow: 0px 4px 6px rgba(0,0,0,0.1);
+        transition: all 0.2s;
+        width: 100%;
     }}
     div.stButton > button:hover {{
-        background-color: #fff;
-        transform: scale(1.05);
-        color: #ff4b4b;
+        background-color: #f0f0f0;
+        border-color: #000;
     }}
-    
-    /* --- Split Screen Logik für Seite 2 --- */
-    
-    /* Linke Spalte (Jumphouse) Hintergrund */
-    div[data-testid="column"]:nth-of-type(1) {{
+
+    /* --- Hintergrund-Klassen für Seite 2 --- */
+    .split-bg-left {{
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 50vw;
+        height: 100vh;
         background-image: url("{IMG_JUMPHOUSE}");
         background-size: cover;
         background-position: center;
-        height: 100vh; /* Volle Höhe */
-        display: flex;
-        flex-direction: column;
-        justify-content: center; /* Vertikal mittig */
-        align-items: center;
+        z-index: 0;
     }}
     
-    /* Rechte Spalte (Wunderland) Hintergrund */
-    div[data-testid="column"]:nth-of-type(2) {{
+    .split-bg-right {{
+        position: fixed;
+        top: 0;
+        right: 0;
+        width: 50vw; /* 50% der Viewport Width */
+        height: 100vh;
         background-image: url("{IMG_WUNDERLAND}");
         background-size: cover;
         background-position: center;
-        height: 100vh; /* Volle Höhe */
-        display: flex;
-        flex-direction: column;
-        justify-content: center; /* Vertikal mittig */
-        align-items: center;
+        z-index: 0;
     }}
     
-    /* Overlay Title auf Seite 2 */
-    .floating-title {{
-        position: absolute;
-        top: 5vh;
-        left: 0;
+    /* Titel Style für Overlay */
+    .overlay-title {{
+        position: fixed;
+        top: 10%;
         width: 100%;
         text-align: center;
-        font-size: 3rem;
-        font-weight: bold;
         color: white;
-        text-shadow: 0px 0px 10px rgba(0,0,0,0.8);
-        z-index: 100;
-        pointer-events: none; /* Klicks gehen durch */
+        font-size: 32px;
+        font-weight: bold;
+        text-shadow: 0px 2px 4px rgba(0,0,0,0.8);
+        z-index: 2;
+        font-family: sans-serif;
     }}
-    
     </style>
     """, unsafe_allow_html=True)
 
-# --- SEITE 1: Intro (Lockerer Vibe) ---
+# ==========================================
+# SEITE 1: Intro
+# ==========================================
 if st.session_state.page == 1:
-    # Hintergrund für Seite 1 (Dunkel/Modern)
+    # Dunkler Hintergrund für Seite 1
     st.markdown("""
     <style>
     .stApp {
-        background: linear-gradient(135deg, #1e1e1e 0%, #3a3a3a 100%);
+        background-color: #1a1a1a;
     }
+    h1 { color: white; font-family: sans-serif; text-align: center; }
     </style>
     """, unsafe_allow_html=True)
 
-    # Vertikale Zentrierung simulieren
+    # Abstandshalter, um den Inhalt mittig zu bekommen
     st.write("")
     st.write("")
     st.write("")
     st.write("")
     st.write("")
+    st.write("")
+
+    st.title("Ich habe eine Frage an dich")
     
-    st.title("Ich hab da mal ne Frage... 😏")
-    
     st.write("")
     st.write("")
-    
-    # Button mittig
-    col1, col2, col3 = st.columns([1,1,1])
+
+    # Button zentriert
+    col1, col2, col3 = st.columns([1, 1, 1])
     with col2:
-        st.write("")
-        st.write("")
-        if st.button("Schieß los"):
+        if st.button("Zur Frage"):
             st.session_state.page = 2
             st.rerun()
 
-# --- SEITE 2: Der Split Screen ---
+# ==========================================
+# SEITE 2: Auswahl (Split Screen)
+# ==========================================
 elif st.session_state.page == 2:
     
-    # Der Titel schwebt über allem
-    st.markdown('<div class="floating-title">Wo geht\'s hin?</div>', unsafe_allow_html=True)
+    # 1. Wir rendern die Hintergründe manuell via HTML
+    # Das umgeht das Problem, dass Streamlit-Spalten manchmal leer bleiben.
+    st.markdown('<div class="split-bg-left"></div>', unsafe_allow_html=True)
+    st.markdown('<div class="split-bg-right"></div>', unsafe_allow_html=True)
+    
+    # 2. Der Titel (schwebt darüber)
+    st.markdown('<div class="overlay-title">Wo möchtest du mit mir hingehen?</div>', unsafe_allow_html=True)
 
-    # Das Layout: Zwei Spalten, kein Abstand (gap=0)
-    c1, c2 = st.columns(2, gap="small") 
-    # Hinweis: gap="small" ist technisch nötig, das CSS überschreibt den visuellen Abstand
+    # 3. Die Buttons positionieren
+    # Wir nutzen leere Container, um die Buttons nach unten zu schieben
+    st.write("")
+    st.write("")
+    st.write("")
+    st.write("")
+    st.write("")
+    st.write("")
+    st.write("")
+    st.write("")
+    st.write("")
+    
+    # Layout Spalten für die Buttons
+    c1, c2 = st.columns(2)
 
     with c1:
-        # Hier ist nichts drin außer Abstandhaltern, weil das CSS das Bild setzt
-        # Wir brauchen nur den Button
-        # Wir nutzen Container um den Button etwas nach unten zu schieben falls nötig
-        st.write("") 
-        st.write("") 
-        if st.button("Jumphouse 🤸‍♂️"):
-            st.session_state.choice = "Jumphouse"
-            st.session_state.page = 3
-            st.rerun()
+        # Linke Seite Button
+        col_pad_l, col_btn_l, col_pad_r = st.columns([1, 2, 1])
+        with col_btn_l:
+            st.write("") # Kleiner Abstand
+            if st.button("Zum Jumphouse"):
+                st.session_state.choice = "Jumphouse"
+                st.session_state.page = 3
+                st.rerun()
 
     with c2:
-        st.write("") 
-        st.write("") 
-        if st.button("Miniatur Wunderland 🚂"):
-            st.session_state.choice = "Wunderland"
-            st.session_state.page = 3
-            st.rerun()
+        # Rechte Seite Button
+        col_pad_l, col_btn_r, col_pad_r = st.columns([1, 2, 1])
+        with col_btn_r:
+            st.write("") # Kleiner Abstand
+            if st.button("Zum Miniaturwunderland"):
+                st.session_state.choice = "Wunderland"
+                st.session_state.page = 3
+                st.rerun()
 
-# --- SEITE 3: Ergebnis ---
+# ==========================================
+# SEITE 3: Ergebnis
+# ==========================================
 elif st.session_state.page == 3:
+    # Einfacher weißer Text auf dunklem Grund
     st.markdown("""
     <style>
     .stApp {
-        background: #111;
+        background-color: #1a1a1a;
         color: white;
+        text-align: center;
     }
     </style>
     """, unsafe_allow_html=True)
     
-    st.balloons()
-    
     st.write("")
     st.write("")
     st.write("")
-    
-    st.title("Alles klar. 😉")
     
     if st.session_state.choice == "Jumphouse":
-        st.markdown("<h3 style='text-align: center;'>Dann pack die Sportsachen ein. Wir gehen springen.</h3>", unsafe_allow_html=True)
+        st.header("Alles klar. Jumphouse.")
+        st.write("Dann machen wir Sport.")
     else:
-        st.markdown("<h3 style='text-align: center;'>Gute Wahl. Bisschen Kultur und staunen.</h3>", unsafe_allow_html=True)
-        
-    st.write("")
-    st.markdown("<p style='text-align: center; color: #888;'>Ich schreib dir wann/wo.</p>", unsafe_allow_html=True)
+        st.header("Alles klar. Miniaturwunderland.")
+        st.write("Dann schauen wir uns das an.")
